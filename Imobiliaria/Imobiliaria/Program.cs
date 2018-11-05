@@ -10,7 +10,48 @@ namespace Imobiliaria
     class Program
     {
 
+        static void Main(string[] args)
+        {
+
+            int codProp = 0, codCliente = 0, codCorretor = 0, codImovel = 0, codLocAux;
+
+            pesquisa();
+
+            Console.ReadKey();
+
+        }
+
+        public static void menu()
+        {
+
+            /* 
+             * menu
+             * Abre o menu
+             * Entrada:
+             * Saída:
+             * Código+Nome+Endereço+Telefone
+             */
+
+
+
+        }
+
+
         // Funções de Cadastro
+
+        public static void cadastro()
+        {
+            /* 
+             * cadastro
+             * Abre o menu de cadastros
+             * Entrada:
+             * Saída:
+             */
+
+
+
+        }
+
 
         public static void cadProp(ref int codProp)
         {
@@ -238,15 +279,58 @@ namespace Imobiliaria
 
         }
 
-        public static void cadLoc()
+        public static void cadLoc(ref int codLoc)
         {
 
             /* cadLoc
              * Cadastra uma nova locação
              * Entrada:
              * Saída:
+             * Código locação+Código imóvel+Código cliente+Aluguel+Taxa administrativa+Valor do proprietário+Data de início da locação+Duração da locação
              */
 
+            FileStream arqLoc = new FileStream("locacoes/corretor.txt", FileMode.Open);
+            StreamReader leLoc = new StreamReader(arqLoc);
+            StreamWriter escLoc = new StreamWriter(arqLoc);
+            string leLinha;
+            string[] codLocAux;
+            int codImovel, codCliente, inicio, duracao;
+            double aluguel, taxa, valorProp;
+
+            do
+            {
+
+                leLinha = leLoc.ReadLine();
+
+                if (leLinha != null)
+                {
+
+                    codLocAux = leLinha.Split('+');
+                    codLoc = int.Parse(codLocAux[0]);
+
+                }
+
+            } while (leLinha != null);
+
+            if (leLinha != null)
+            {
+                escLoc.WriteLine(leLinha);
+            }
+
+            /*
+            Console.WriteLine("Nome:");
+            nome = Console.ReadLine();
+            Console.WriteLine("Endereço:");
+            end = Console.ReadLine();
+            Console.WriteLine("Telefone:");
+            tel = int.Parse(Console.ReadLine());
+            Console.WriteLine("Salário:");
+            salario = double.Parse(Console.ReadLine());
+            codCorretor++;
+            escCorretor.WriteLine($"{codCorretor}+{nome}+{end}+{tel}+{salario}");
+            */
+            escLoc.Close();
+            leLoc.Close();
 
 
         }
@@ -271,7 +355,7 @@ namespace Imobiliaria
 
             /* 
              * pesquisa
-             * Pesquisa 
+             * Abre o menu de pesquisas
              * Entrada:
              * Saída:
              */
@@ -281,7 +365,7 @@ namespace Imobiliaria
 
             do
             {
-                Console.WriteLine("Digite uma opção para pesquisa:" +
+                Console.WriteLine("\nDigite uma opção para pesquisa:" +
                                 "\n\nA. informações de clientes" +
                                 "\nB. informações de proprietários" +
                                 "\nC. informações de corretores" +
@@ -347,7 +431,29 @@ namespace Imobiliaria
 
             FileStream arqProp = new FileStream("informacoes/proprietario.txt", FileMode.Open);
             StreamReader leProp = new StreamReader(arqProp);
+            string linha;
+            string[] inf;
 
+            do
+            {
+
+                linha = leProp.ReadLine();
+                if (linha != null)
+                {
+                    inf = linha.Split('+');
+
+                    if (inf[1] == nome)
+                    {
+                        Console.WriteLine($"Código: {inf[0]}" +
+                            $"\nNome: {inf[1]}" +
+                            $"\nEndereço: {inf[2]}" +
+                            $"\nTelefone: {inf[3]}");
+                    }
+                }
+
+            } while (linha != null);
+
+            leProp.Close();
 
         }
 
@@ -363,7 +469,33 @@ namespace Imobiliaria
 
             FileStream arqCliente = new FileStream("informacoes/cliente.txt", FileMode.Open);
             StreamReader leCliente = new StreamReader(arqCliente);
+            string linha;
+            string[] inf;
 
+            do
+            {
+
+                linha = leCliente.ReadLine();
+
+                if (linha != null)
+                {
+                    inf = linha.Split('+');
+
+                    if (inf[1] == nome)
+                    {
+                        Console.WriteLine($"Código: {inf[0]}" +
+                            $"\nNome: {inf[1]}" +
+                            $"\nEndereço: {inf[2]}" +
+                            $"\nTelefone: {inf[3]}" +
+                            $"\nData de nascimento: {inf[4]}");
+                    }
+
+                }
+
+
+            } while (linha != null);
+
+            leCliente.Close();
 
         }
 
@@ -380,10 +512,49 @@ namespace Imobiliaria
             FileStream arqCorretor = new FileStream("informacoes/corretor.txt", FileMode.Open);
             StreamReader leCorretor = new StreamReader(arqCorretor);
 
+            string linha;
+            string[] inf;
+
+            do
+            {
+
+                linha = leCorretor.ReadLine();
+                if (linha != null)
+                {
+                    inf = linha.Split('+');
+
+                    if (inf[1] == nome)
+                    {
+                        Console.WriteLine($"Código: {inf[0]}" +
+                            $"Nome: {inf[1]}" +
+                            $"Endereço: {inf[2]}" +
+                            $"Telefone: {inf[3]}" +
+                            $"Salário: {inf[4]}");
+                    }
+                }
+
+            } while (linha != null);
+
+            leCorretor.Close();
+
 
         }
 
         // Relatório
+
+        public static void relatorio()
+        {
+            /* 
+             * relatorio
+             * Abre o menu de relatórios
+             * Entrada:
+             * Saída:
+             * Código+Nome+Endereço+Telefone
+             */
+
+
+
+        }
 
         public static void relCorretor()
         {
@@ -424,15 +595,5 @@ namespace Imobiliaria
 
         }
 
-        static void Main(string[] args)
-        {
-
-            int codProp = 0, codCliente = 0, codCorretor = 0, codImovelAux = 0;
-
-            cadCorretor(ref codCorretor);
-
-            Console.ReadKey();
-
-        }
     }
 }
