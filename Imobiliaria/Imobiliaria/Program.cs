@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Configuration;
 
 namespace Imobiliaria
 {
@@ -175,7 +176,7 @@ namespace Imobiliaria
 
                 }
 
-            } while (opc != 'd');
+            } while (opc != 'g');
 
             Console.ReadKey();
 
@@ -236,8 +237,6 @@ namespace Imobiliaria
             escProp.Close();
             leProp.Close();
 
-            Console.ReadKey();
-
         }
 
         public static void cadCliente(ref int codCliente)
@@ -294,8 +293,6 @@ namespace Imobiliaria
 
             escCliente.Close();
             leCliente.Close();
-
-            Console.ReadKey();
 
         }
 
@@ -355,8 +352,6 @@ namespace Imobiliaria
             escCorretor.Close();
             leCorretor.Close();
 
-            Console.ReadKey();
-
         }
 
         public static void cadImovel(ref int codImovel)
@@ -372,11 +367,10 @@ namespace Imobiliaria
             FileStream arqImovel = new FileStream("informacoes/imovel.txt", FileMode.Open);
             StreamReader leImovel = new StreamReader(arqImovel);
             StreamWriter escImovel = new StreamWriter(arqImovel);
-            string end, leLinha, cat, status, obs, tipo2 = "";
+            string end, leLinha, cat, status = "", obs, tipo2 = "";
             string[] codImovelAux;
-            int codProp, quartos, vagas;
+            int codProp, quartos, vagas, tipo1 = 1;
             double valor, cond;
-            char tipo1 = '0';
 
             Console.Clear();
 
@@ -402,25 +396,30 @@ namespace Imobiliaria
                 escImovel.WriteLine(leLinha);
             }
 
-            while (tipo1 != '1' && tipo1 != '2')
+            do
             {
                 Console.WriteLine("Tipo de imóvel:" +
-                    "[1] VENDA" +
-                    "[2] ALUGUEL");
-                tipo1 = char.Parse(Console.ReadLine());
-                if (tipo1 == '1')
+                    "\n[1] VENDA" +
+                    "\n[2] ALUGUEL");
+                tipo1 = int.Parse(Console.ReadLine());
+                if (tipo1 == 1)
                 {
-                    tipo2 = "a vender";
+                    status = "a vender";
+                    tipo2 = "venda";
+                    tipo1 = 1;
                 }
-                if (tipo1 == '2')
+                else if (tipo1 == 2)
                 {
-                    tipo2 = "a alugar";
+                    status = "a alugar";
+                    tipo2 = "locação";
+                    tipo1 = 1;
                 }
                 else
                 {
                     Console.WriteLine("Resposta inválida");
+                    tipo1 = 0;
                 }
-            }
+            } while (tipo1 != 1 && tipo1 != 0);
 
             Console.WriteLine("Código do proprietário:");
             codProp = int.Parse(Console.ReadLine());
@@ -436,8 +435,6 @@ namespace Imobiliaria
             valor = double.Parse(Console.ReadLine());
             Console.WriteLine("Condomínio:");
             cond = double.Parse(Console.ReadLine());
-            Console.WriteLine("Status:");
-            status = Console.ReadLine();
             Console.WriteLine("Observações:");
             obs = Console.ReadLine();
             codImovel++;
@@ -445,8 +442,6 @@ namespace Imobiliaria
 
             escImovel.Close();
             leImovel.Close();
-
-            Console.ReadKey();
 
         }
 
@@ -468,13 +463,15 @@ namespace Imobiliaria
             StreamWriter escImovel = new StreamWriter(arqImovel);
             string leLinha;
             string[] codLocAux, linhaImovel;
-            int codImovel, codImovelAux, codCliente, inicio, duracao;
-            double aluguel, taxa, valorProp;
+            int codImovel, codImovelAux = 0, codCliente, inicio, duracao;
+            double aluguel = 0, taxa, valorProp;
 
             Console.Clear();
 
             // TO DO (a fazer)
             // Um imóvel só pode ser alugado, caso o status dele seja “a alugar” e o seu tipo deve ser “aluguel”
+            // Para cadastrar uma locação ou venda, primeiro é necessário que o cliente, proprietário e imóvel estejam cadastrados
+            // Fazer modificar a linha do imóvel e não criar outra
 
             Console.WriteLine("Cadastrar locação\n\n");
 
@@ -508,15 +505,19 @@ namespace Imobiliaria
             {
 
                 leLinha = leImovel.ReadLine();
-                linhaImovel = leLinha.Split('+');
-                codImovelAux = int.Parse(linhaImovel[0]);
-                aluguel = double.Parse(linhaImovel[7]);
 
-                if (codImovelAux == codImovel)
+                if (leLinha != null)
                 {
+                    linhaImovel = leLinha.Split('+');
+                    codImovelAux = int.Parse(linhaImovel[0]);
+                    aluguel = double.Parse(linhaImovel[7]);
 
-                    escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+alugado+{linhaImovel[10]}");
+                    if (codImovelAux == codImovel)
+                    {
 
+                        escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+alugado+{linhaImovel[10]}");
+
+                    }
                 }
 
             } while (leLinha != null);
@@ -548,8 +549,6 @@ namespace Imobiliaria
             escLoc.Close();
             leLoc.Close();
 
-            Console.ReadKey();
-
         }
 
         public static void cadVenda(ref int codVenda)
@@ -569,12 +568,15 @@ namespace Imobiliaria
             StreamWriter escImovel = new StreamWriter(arqImovel);
             string leLinha;
             string[] codVendaAux, linhaImovel;
-            int codImovel, codImovelAux, codCliente, codCorretor, dataVenda;
-            double venda, taxa, valorProp;
+            int codImovel, codImovel2, codImovelAux = 0, codCliente, codCorretor, dataVenda;
+            double venda = 0, taxa, valorProp;
 
             // TO DO (a fazer)
             // Um imóvel só pode ser vendido, caso o status dele seja “a vender” e o seu tipo deve ser “venda”
             // Fazer um menu para cadastrar propostas e outro de vendas efetivadas
+            // Para cadastrar uma locação ou venda, primeiro é necessário que o cliente, proprietário e imóvel estejam cadastrados
+            // Fazer modificar a linha do imóvel e não criar outra
+            // Não está escrevendo a linha com vendido, depois do com proposta
 
             Console.Clear();
 
@@ -603,6 +605,7 @@ namespace Imobiliaria
 
             Console.WriteLine("Código do imóvel:");
             codImovel = int.Parse(Console.ReadLine());
+            codImovel2 = codImovel - 1;
             Console.WriteLine("Código do cliente:");
             codCliente = int.Parse(Console.ReadLine());
             // Alterar pra pegar o nome do cliente e transformar pro código dele
@@ -613,14 +616,20 @@ namespace Imobiliaria
             {
 
                 leLinha = leImovel.ReadLine();
-                linhaImovel = leLinha.Split('+');
-                codImovelAux = int.Parse(linhaImovel[0]);
-                venda = double.Parse(linhaImovel[7]);
 
-                if (codImovelAux == codImovel)
+                if (leLinha != null)
                 {
 
-                    escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+com proposta+{linhaImovel[10]}");
+                    linhaImovel = leLinha.Split('+');
+                    codImovelAux = int.Parse(linhaImovel[0]);
+                    venda = double.Parse(linhaImovel[7]);
+
+                    if (codImovelAux == codImovel)
+                    {
+
+                        escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+com proposta+{linhaImovel[10]}");
+
+                    }
 
                 }
 
@@ -639,15 +648,19 @@ namespace Imobiliaria
             {
 
                 leLinha = leImovel.ReadLine();
-                linhaImovel = leLinha.Split('+');
-                codImovelAux = int.Parse(linhaImovel[0]);
-                venda = double.Parse(linhaImovel[7]);
 
-                if (codImovelAux == codImovel)
+                if (leLinha != null)
                 {
+                    linhaImovel = leLinha.Split('+');
+                    codImovelAux = int.Parse(linhaImovel[0]);
+                    venda = double.Parse(linhaImovel[7]);
 
-                    escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+vendido+{linhaImovel[10]}");
+                    if (codImovelAux == codImovel)
+                    {
 
+                        escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+vendido+{linhaImovel[10]}");
+
+                    }
                 }
 
             } while (leLinha != null);
@@ -656,8 +669,6 @@ namespace Imobiliaria
             leImovel.Close();
             escVenda.Close();
             leVenda.Close();
-
-            Console.ReadKey();
 
         }
 
@@ -973,15 +984,20 @@ namespace Imobiliaria
             {
 
                 leLinha = leVenda.ReadLine();
-                linhaImovel = leLinha.Split('+');
-                codCorretorAux = int.Parse(linhaImovel[3]);
 
-                if (codCorretorAux == codCorretor)
+                if (leLinha != null)
                 {
 
-                    Console.WriteLine($"Número da venda:{linhaImovel[0]}+\nCódigo do Imóvel: {linhaImovel[1]}+\nCódigo do cliente: {linhaImovel[2]}+\nCódigo do corretor: {linhaImovel[3]}+" +
-                        $"\nValor da venda: R${linhaImovel[4]}+\nTaxa administrativa: R${linhaImovel[5]}+\nValor do proprietário: R${linhaImovel[6]}+\nData da venda: {linhaImovel[7]}");
+                    linhaImovel = leLinha.Split('+');
+                    codCorretorAux = int.Parse(linhaImovel[3]);
 
+                    if (codCorretorAux == codCorretor)
+                    {
+
+                        Console.WriteLine($"Número da venda:{linhaImovel[0]}\nCódigo do Imóvel: {linhaImovel[1]}\nCódigo do cliente: {linhaImovel[2]}\nCódigo do corretor: {linhaImovel[3]}" +
+                            $"\nValor da venda: R${linhaImovel[4]}\nTaxa administrativa: R${linhaImovel[5]}\nValor do proprietário: R${linhaImovel[6]}\nData da venda: {linhaImovel[7]}");
+
+                    }
                 }
 
             } while (leLinha != null);
@@ -1015,15 +1031,20 @@ namespace Imobiliaria
             {
 
                 leLinha = leVenda.ReadLine();
-                linhaImovel = leLinha.Split('+');
-                dataAux = int.Parse(linhaImovel[7]);
 
-                if (dataAux == data)
+                if (leLinha != null)
                 {
 
-                    Console.WriteLine($"Número da venda:{linhaImovel[0]}+\nCódigo do Imóvel: {linhaImovel[1]}+\nCódigo do cliente: {linhaImovel[2]}+\nCódigo do corretor: {linhaImovel[3]}+" +
-                        $"\nValor da venda: R${linhaImovel[4]}+\nTaxa administrativa: R${linhaImovel[5]}+\nValor do proprietário: R${linhaImovel[6]}+\nData da venda: {linhaImovel[7]}");
+                    linhaImovel = leLinha.Split('+');
+                    dataAux = int.Parse(linhaImovel[7]);
 
+                    if (dataAux == data)
+                    {
+
+                        Console.WriteLine($"Número da venda:{linhaImovel[0]}\nCódigo do Imóvel: {linhaImovel[1]}\nCódigo do cliente: {linhaImovel[2]}\nCódigo do corretor: {linhaImovel[3]}" +
+                            $"\nValor da venda: R${linhaImovel[4]}\nTaxa administrativa: R${linhaImovel[5]}\nValor do proprietário: R${linhaImovel[6]}\nData da venda: {linhaImovel[7]}");
+
+                    }
                 }
 
             } while (leLinha != null);
@@ -1057,15 +1078,19 @@ namespace Imobiliaria
             {
 
                 leLinha = leLoc.ReadLine();
-                linhaImovel = leLinha.Split('+');
-                dataAux = int.Parse(linhaImovel[6]);
-
-                if (dataAux == data)
+                if (leLinha != null)
                 {
 
-                    Console.WriteLine($"Número da locação:{linhaImovel[0]}+\nCódigo do imóvel: {linhaImovel[1]}+\nCódigo do inquilino: {linhaImovel[2]}+\nValor do aluguel: R${linhaImovel[3]}+" +
-                        $"\nTaxa administrativa: R${linhaImovel[4]}+\nValor do prietário: R${linhaImovel[5]}+\nData de início da locação: {linhaImovel[6]}+\nDuração da locação: {linhaImovel[7]} meses");
+                    linhaImovel = leLinha.Split('+');
+                    dataAux = int.Parse(linhaImovel[6]);
 
+                    if (dataAux == data)
+                    {
+
+                        Console.WriteLine($"Número da locação:{linhaImovel[0]}\nCódigo do imóvel: {linhaImovel[1]}\nCódigo do inquilino: {linhaImovel[2]}\nValor do aluguel: R${linhaImovel[3]}" +
+                            $"\nTaxa administrativa: R${linhaImovel[4]}\nValor do prietário: R${linhaImovel[5]}\nData de início da locação: {linhaImovel[6]}\nDuração da locação: {linhaImovel[7]} meses");
+
+                    }
                 }
 
             } while (leLinha != null);
