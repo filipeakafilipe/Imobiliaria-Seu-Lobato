@@ -21,8 +21,6 @@ namespace Imobiliaria
 
             menu();
 
-            Console.ReadKey();
-
         }
 
         public static void menu()
@@ -36,9 +34,13 @@ namespace Imobiliaria
              */
 
             char opc;
+
             do
             {
-                Console.WriteLine("Menu:" +
+
+                Console.Clear();
+
+                Console.WriteLine("Menu\n\n" +
                     "\nA. cadastro" +
                     "\nB. pesquisa" +
                     "\nC. relatório" +
@@ -65,12 +67,12 @@ namespace Imobiliaria
 
                     case 'd':
 
-                        Console.WriteLine("Encerrando");
+                        Console.WriteLine("\nAperte uma tecla para sair");
                         break;
 
                     default:
 
-                        Console.WriteLine("Opção inválida, digite H para ver as opções");
+                        Console.WriteLine("\nOpção inválida, digite H para ver as opções");
                         opc = char.Parse(Console.ReadLine().ToLower());
                         if (opc == 'h')
                         {
@@ -83,6 +85,9 @@ namespace Imobiliaria
                         break;
                 }
             } while (opc != 'd');
+
+            Console.ReadKey();
+
         }
 
 
@@ -100,10 +105,12 @@ namespace Imobiliaria
             int codProp = 0, codCliente = 0, codCorretor = 0, codImovel = 0, codLoc = 0, codVenda = 0;
             char opc;
 
-
             do
             {
-                Console.WriteLine("\nDigite uma opção para cadastrar:" +
+
+                Console.Clear();
+                Console.WriteLine("Cadastro\n\n");
+                Console.WriteLine("Digite uma opção para cadastrar:" +
                                 "\n\nA. proprietário" +
                                 "\nB. cliente" +
                                 "\nC. corretor" +
@@ -132,7 +139,7 @@ namespace Imobiliaria
 
                     case 'd':
 
-                        cadImovel(ref codCorretor);
+                        cadImovel(ref codImovel);
                         break;
 
                     case 'e':
@@ -147,7 +154,7 @@ namespace Imobiliaria
 
                     case 'g':
 
-                        Console.WriteLine("Saindo");
+                        Console.WriteLine("\nAperte uma tecla para sair");
                         break;
 
                     default:
@@ -170,6 +177,8 @@ namespace Imobiliaria
 
             } while (opc != 'd');
 
+            Console.ReadKey();
+
         }
 
 
@@ -190,6 +199,10 @@ namespace Imobiliaria
             string nome, end, leLinha;
             string[] codPropAux;
             int tel;
+
+            Console.Clear();
+
+            Console.WriteLine("Cadastrar proprietário\n\n");
 
             do
             {
@@ -223,6 +236,8 @@ namespace Imobiliaria
             escProp.Close();
             leProp.Close();
 
+            Console.ReadKey();
+
         }
 
         public static void cadCliente(ref int codCliente)
@@ -241,6 +256,10 @@ namespace Imobiliaria
             string nome, end, leLinha;
             string[] codClienteAux;
             int tel, data;
+
+            Console.Clear();
+
+            Console.WriteLine("Cadastrar cliente\n\n");
 
             do
             {
@@ -276,6 +295,7 @@ namespace Imobiliaria
             escCliente.Close();
             leCliente.Close();
 
+            Console.ReadKey();
 
         }
 
@@ -296,6 +316,10 @@ namespace Imobiliaria
             string[] codCorretorAux;
             int tel;
             double salario;
+
+            Console.Clear();
+
+            Console.WriteLine("Cadastrar corretor\n\n");
 
             do
             {
@@ -331,6 +355,8 @@ namespace Imobiliaria
             escCorretor.Close();
             leCorretor.Close();
 
+            Console.ReadKey();
+
         }
 
         public static void cadImovel(ref int codImovel)
@@ -351,6 +377,10 @@ namespace Imobiliaria
             int codProp, quartos, vagas;
             double valor, cond;
             char tipo1 = '0';
+
+            Console.Clear();
+
+            Console.WriteLine("Cadastrar imóvel\n\n");
 
             do
             {
@@ -416,6 +446,8 @@ namespace Imobiliaria
             escImovel.Close();
             leImovel.Close();
 
+            Console.ReadKey();
+
         }
 
         public static void cadLoc(ref int codLoc)
@@ -439,8 +471,12 @@ namespace Imobiliaria
             int codImovel, codImovelAux, codCliente, inicio, duracao;
             double aluguel, taxa, valorProp;
 
+            Console.Clear();
+
             // TO DO (a fazer)
             // Um imóvel só pode ser alugado, caso o status dele seja “a alugar” e o seu tipo deve ser “aluguel”
+
+            Console.WriteLine("Cadastrar locação\n\n");
 
             do
             {
@@ -512,6 +548,7 @@ namespace Imobiliaria
             escLoc.Close();
             leLoc.Close();
 
+            Console.ReadKey();
 
         }
 
@@ -538,6 +575,10 @@ namespace Imobiliaria
             // TO DO (a fazer)
             // Um imóvel só pode ser vendido, caso o status dele seja “a vender” e o seu tipo deve ser “venda”
             // Fazer um menu para cadastrar propostas e outro de vendas efetivadas
+
+            Console.Clear();
+
+            Console.WriteLine("Cadastrar venda\n\n");
 
             do
             {
@@ -616,6 +657,8 @@ namespace Imobiliaria
             escVenda.Close();
             leVenda.Close();
 
+            Console.ReadKey();
+
         }
 
         // Funções de Pesquisa
@@ -635,7 +678,10 @@ namespace Imobiliaria
 
             do
             {
-                Console.WriteLine("\nDigite uma opção para pesquisa:" +
+
+                Console.Clear();
+                Console.WriteLine("Pesquisa\n\n");
+                Console.WriteLine("Digite uma opção para pesquisa:" +
                                 "\n\nA. informações de clientes" +
                                 "\nB. informações de proprietários" +
                                 "\nC. informações de corretores" +
@@ -667,7 +713,7 @@ namespace Imobiliaria
 
                     case 'd':
 
-                        Console.WriteLine("Saindo");
+                        Console.WriteLine("\nAperte uma tecla para sair");
                         break;
 
                     default:
@@ -687,6 +733,8 @@ namespace Imobiliaria
 
             } while (opc != 'd');
 
+            Console.ReadKey();
+
         }
 
         public static void pesProp(string nome)
@@ -703,6 +751,10 @@ namespace Imobiliaria
             StreamReader leProp = new StreamReader(arqProp);
             string linha;
             string[] inf;
+
+            Console.Clear();
+
+            Console.WriteLine("Pesquisa proprietário\n\n");
 
             do
             {
@@ -725,6 +777,8 @@ namespace Imobiliaria
 
             leProp.Close();
 
+            Console.ReadKey();
+
         }
 
         public static void pesCliente(string nome)
@@ -741,6 +795,10 @@ namespace Imobiliaria
             StreamReader leCliente = new StreamReader(arqCliente);
             string linha;
             string[] inf;
+
+            Console.Clear();
+
+            Console.WriteLine("Pesquisa cliente\n\n");
 
             do
             {
@@ -767,6 +825,8 @@ namespace Imobiliaria
 
             leCliente.Close();
 
+            Console.ReadKey();
+
         }
 
         public static void pesCorretor(string nome)
@@ -784,6 +844,10 @@ namespace Imobiliaria
 
             string linha;
             string[] inf;
+
+            Console.Clear();
+
+            Console.WriteLine("Pesquisa corretor\n\n");
 
             do
             {
@@ -807,6 +871,7 @@ namespace Imobiliaria
 
             leCorretor.Close();
 
+            Console.ReadKey();
 
         }
 
@@ -826,11 +891,14 @@ namespace Imobiliaria
 
             do
             {
-                Console.WriteLine("\nDigite uma opção de relatório:" +
+
+                Console.Clear();
+                Console.WriteLine("Relatório\n\n");
+                Console.WriteLine("Digite uma opção de relatório:" +
                                 "\n\nA. vendas de um corretor" +
                                 "\nB. vendas em uma data" +
                                 "\nC. locações em um data" +
-                                "\nD. sair");
+                                "\nD. sair\n");
                 opc = char.Parse(Console.ReadLine().ToLower());
 
                 switch (opc)
@@ -858,7 +926,7 @@ namespace Imobiliaria
 
                     case 'd':
 
-                        Console.WriteLine("Saindo");
+                        Console.WriteLine("\nAperte uma tecla para sair");
                         break;
 
                     default:
@@ -870,13 +938,15 @@ namespace Imobiliaria
                                             "\n\nA. informações de clientes" +
                                             "\nB. informações de proprietários" +
                                             "\nC. informações de corretores" +
-                                            "\nD. sair");
+                                            "\nD. sair\n");
                         }
                         break;
 
                 }
 
             } while (opc != 'd');
+
+            Console.ReadKey();
 
         }
 
@@ -895,7 +965,9 @@ namespace Imobiliaria
             string[] linhaImovel;
             int codCorretorAux;
 
-            Console.WriteLine("\nRelatório das vendas:\n");
+            Console.Clear();
+
+            Console.WriteLine("Relatório das vendas\n\n");
 
             do
             {
@@ -915,6 +987,9 @@ namespace Imobiliaria
             } while (leLinha != null);
 
             leVenda.Close();
+
+            Console.ReadKey();
+
         }
 
         public static void relVenda(int data)
@@ -932,7 +1007,9 @@ namespace Imobiliaria
             string[] linhaImovel;
             int dataAux;
 
-            Console.WriteLine("\nRelatório das vendas:\n");
+            Console.Clear();
+
+            Console.WriteLine("Relatório das vendas\n\n");
 
             do
             {
@@ -953,6 +1030,8 @@ namespace Imobiliaria
 
             leVenda.Close();
 
+            Console.ReadKey();
+
         }
 
         public static void relLoc(int data)
@@ -970,7 +1049,9 @@ namespace Imobiliaria
             string[] linhaImovel;
             int dataAux;
 
-            Console.WriteLine("\nRelatório das locações:\n");
+            Console.Clear();
+
+            Console.WriteLine("Relatório das locações\n\n");
 
             do
             {
@@ -990,6 +1071,8 @@ namespace Imobiliaria
             } while (leLinha != null);
 
             leLoc.Close();
+
+            Console.ReadKey();
 
         }
 
