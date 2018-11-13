@@ -762,6 +762,7 @@ namespace Imobiliaria
             StreamReader leProp = new StreamReader(arqProp);
             string linha;
             string[] inf;
+            int quant = 0;
 
             Console.Clear();
 
@@ -781,10 +782,16 @@ namespace Imobiliaria
                             $"\nNome: {inf[1]}" +
                             $"\nEndereço: {inf[2]}" +
                             $"\nTelefone: {inf[3]}");
+                        quant++;
                     }
                 }
 
             } while (linha != null);
+
+            if (quant == 0)
+            {
+                Console.WriteLine("Nenhum cadastro encontrado");
+            }
 
             leProp.Close();
 
@@ -806,6 +813,7 @@ namespace Imobiliaria
             StreamReader leCliente = new StreamReader(arqCliente);
             string linha;
             string[] inf;
+            int quant = 0;
 
             Console.Clear();
 
@@ -827,12 +835,17 @@ namespace Imobiliaria
                             $"\nEndereço: {inf[2]}" +
                             $"\nTelefone: {inf[3]}" +
                             $"\nData de nascimento: {inf[4]}");
+                        quant++;
                     }
 
                 }
 
-
             } while (linha != null);
+
+            if (quant == 0)
+            {
+                Console.WriteLine("Nenhum cadastro encontrado");
+            }
 
             leCliente.Close();
 
@@ -855,6 +868,7 @@ namespace Imobiliaria
 
             string linha;
             string[] inf;
+            int quant = 0;
 
             Console.Clear();
 
@@ -871,14 +885,20 @@ namespace Imobiliaria
                     if (inf[1].ToUpper() == nome)
                     {
                         Console.WriteLine($"Código: {inf[0]}" +
-                            $"Nome: {inf[1]}" +
-                            $"Endereço: {inf[2]}" +
-                            $"Telefone: {inf[3]}" +
-                            $"Salário: {inf[4]}");
+                            $"\nNome: {inf[1]}" +
+                            $"\nEndereço: {inf[2]}" +
+                            $"\nTelefone: {inf[3]}" +
+                            $"\nSalário: {inf[4]}");
+                        quant++;
                     }
                 }
 
             } while (linha != null);
+
+            if (quant == 0)
+            {
+                Console.WriteLine("Nenhum cadastro encontrado");
+            }
 
             leCorretor.Close();
 
@@ -974,7 +994,7 @@ namespace Imobiliaria
             StreamReader leVenda = new StreamReader(arqVenda);
             string leLinha;
             string[] linhaImovel;
-            int codCorretorAux;
+            int codCorretorAux, quant = 0;
 
             Console.Clear();
 
@@ -996,11 +1016,17 @@ namespace Imobiliaria
 
                         Console.WriteLine($"Número da venda:{linhaImovel[0]}\nCódigo do Imóvel: {linhaImovel[1]}\nCódigo do cliente: {linhaImovel[2]}\nCódigo do corretor: {linhaImovel[3]}" +
                             $"\nValor da venda: R${linhaImovel[4]}\nTaxa administrativa: R${linhaImovel[5]}\nValor do proprietário: R${linhaImovel[6]}\nData da venda: {linhaImovel[7]}");
-
+                        quant++;
                     }
                 }
 
             } while (leLinha != null);
+            
+            if (quant == 0)
+            {
+                Console.WriteLine("Nenhum cadastro encontrado");
+            }
+
 
             leVenda.Close();
 
@@ -1021,7 +1047,7 @@ namespace Imobiliaria
             StreamReader leVenda = new StreamReader(arqVenda);
             string leLinha;
             string[] linhaImovel;
-            int dataAux;
+            int dataAux, quant = 0;
 
             Console.Clear();
 
@@ -1043,11 +1069,16 @@ namespace Imobiliaria
 
                         Console.WriteLine($"Número da venda:{linhaImovel[0]}\nCódigo do Imóvel: {linhaImovel[1]}\nCódigo do cliente: {linhaImovel[2]}\nCódigo do corretor: {linhaImovel[3]}" +
                             $"\nValor da venda: R${linhaImovel[4]}\nTaxa administrativa: R${linhaImovel[5]}\nValor do proprietário: R${linhaImovel[6]}\nData da venda: {linhaImovel[7]}");
-
+                        quant++;
                     }
                 }
 
             } while (leLinha != null);
+
+            if (quant == 0)
+            {
+                Console.WriteLine("Nenhum cadastro encontrado");
+            }
 
             leVenda.Close();
 
@@ -1068,7 +1099,7 @@ namespace Imobiliaria
             StreamReader leLoc = new StreamReader(arqLoc);
             string leLinha;
             string[] linhaImovel;
-            int dataAux;
+            int dataAux, quant = 0;
 
             Console.Clear();
 
@@ -1089,11 +1120,16 @@ namespace Imobiliaria
 
                         Console.WriteLine($"Número da locação:{linhaImovel[0]}\nCódigo do imóvel: {linhaImovel[1]}\nCódigo do inquilino: {linhaImovel[2]}\nValor do aluguel: R${linhaImovel[3]}" +
                             $"\nTaxa administrativa: R${linhaImovel[4]}\nValor do prietário: R${linhaImovel[5]}\nData de início da locação: {linhaImovel[6]}\nDuração da locação: {linhaImovel[7]} meses");
-
+                        quant++;
                     }
                 }
 
             } while (leLinha != null);
+
+            if (quant == 0)
+            {
+                Console.WriteLine("Nenhum cadastro encontrado");
+            }
 
             leLoc.Close();
 
