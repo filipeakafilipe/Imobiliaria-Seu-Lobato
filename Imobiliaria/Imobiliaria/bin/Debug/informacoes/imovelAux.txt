@@ -7,3 +7,15 @@
 7+1234+gggggggggg+lote+venda+0+0+193823+0+a vender+nenhuma
 8+1+1+1+venda+1+1+1+1+a vender+1
 9+1+1+1+venda+1+1+1+1+a vender+1
+10+1+1+1+venda+1+1+1+1+a vender+1
+11+1+1+1+venda+1+1+1+1+a alugar+1
+12+1+1+1+venda+1+1+1+1+a alugar+1
+13+1+1+1+venda+1+1+1+1+a alugar+1
+14+1+1+1+venda+1+1+1+1+a alugar+1
+15+1+1+1+venda+1+1+1+1+a alugar+1
+16+1+1+1+venda+1+1+1+1+a alugar+1
+17+1+1+1+venda+1+1+1+1+a alugar+1
+18+1+1+1+venda+1+1+1+1+a alugar+1
+19+1+1+1+venda+1+1+1+1+a alugar+1
+20+1+1+1+venda+1+1+1+1+a alugar+1
+
