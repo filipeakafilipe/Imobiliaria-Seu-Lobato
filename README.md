@@ -16,7 +16,7 @@ e desenvolver um software específico. A seguir foi descrito como deverá ser o 
 como suas restrições.
 
 O programa cadastra os proprietários dos imóveis, os clientes, os corretores, os imóveis, as
-locações, as vendas, além de possuir opções para pesquisas no sistema.
+locações, as vendas, além de possuir opções para pesquisas e relatórios no sistema.
 
 • PROPRIETARIO: código, nome, endereço, telefone
 
