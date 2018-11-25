@@ -200,7 +200,7 @@ namespace Imobiliaria
             Console.WriteLine("Telefone:");
             Console.WriteLine("DDD:");
             ddd = int.Parse(Console.ReadLine());
-            Console.WriteLine("Telefone:");
+            Console.WriteLine("Número:");
             tel = int.Parse(Console.ReadLine());
             codProp++;
             escProp.WriteLine($"{codProp}+{nome}+{end}+({ddd})-{tel}");
@@ -262,7 +262,7 @@ namespace Imobiliaria
             Console.WriteLine("Telefone:");
             Console.WriteLine("DDD:");
             ddd = int.Parse(Console.ReadLine());
-            Console.WriteLine("Telefone:");
+            Console.WriteLine("Número:");
             tel = int.Parse(Console.ReadLine());
             Console.WriteLine("Data de nascimento:");
             Console.WriteLine("Dia:");
@@ -332,7 +332,7 @@ namespace Imobiliaria
             Console.WriteLine("Telefone:");
             Console.WriteLine("DDD:");
             ddd = int.Parse(Console.ReadLine());
-            Console.WriteLine("Telefone:");
+            Console.WriteLine("Número:");
             tel = int.Parse(Console.ReadLine());
             Console.WriteLine("Salário:");
             salario = double.Parse(Console.ReadLine());
