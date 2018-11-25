@@ -16,14 +16,10 @@ namespace Imobiliaria
         {
 
             // TO DO (a fazer)
-            // Melhorar a implementação de datas, no momentos quando solicitadas e escritas elas ficam na forma ddmmyyyy
             // Comentar o código do programa
             // Escrever o cabeçalho das funções
-            // Passar para Windows Forms
 
             menu();
-
-            // Olhar as restrições, passagens de parâmetros, etc
 
         }
 
@@ -32,9 +28,7 @@ namespace Imobiliaria
 
             /* 
              * menu
-             * Abre o menu
-             * Entrada:
-             * Saída:
+             * Abre o menu de opções (cadastro/pesquisa/relatório/sair)
              */
 
             char opc;
@@ -82,8 +76,6 @@ namespace Imobiliaria
                 }
             } while (opc != 'd');
 
-            //Console.ReadKey();
-
         }
 
 
@@ -93,9 +85,7 @@ namespace Imobiliaria
         {
             /* 
              * cadastro
-             * Abre o menu de cadastros
-             * Entrada:
-             * Saída:
+             * Abre o menu de cadastros (proprietário/cliente/corretor/imóvel/locação/venda/sair)
              */
 
             int codProp = 0, codCliente = 0, codCorretor = 0, codImovel = 0, codLoc = 0, codVenda = 0;
@@ -162,8 +152,6 @@ namespace Imobiliaria
 
             } while (opc != 'g');
 
-            //Console.ReadKey();
-
         }
 
 
@@ -173,9 +161,8 @@ namespace Imobiliaria
             /* 
              * cadProp
              * Cadastra um novo propietário 
-             * Entrada:
-             * Saída:
-             * Código+Nome+Endereço+Telefone
+             * Entrada: ref int codProp
+             * Saída: Código+Nome+Endereço+(DDD)-Telefone (informacoes/proprietario.txt)
              */
 
             FileStream arqProp = new FileStream("informacoes/proprietario.txt", FileMode.Open);
@@ -237,9 +224,8 @@ namespace Imobiliaria
 
             /* cadCliente
              * Cadastra um novo cliente 
-             * Entrada:
-             * Saída:
-             * Código+Nome+Endereço+Telefone+dia/mes/ano
+             * Entrada: ref int codCliente
+             * Saída: Código+Nome+Endereço+(DDD)-Telefone+dia/mes/ano (informacoes/cliente.txt)
              */
 
             FileStream arqCliente = new FileStream("informacoes/cliente.txt", FileMode.Open);
@@ -308,9 +294,8 @@ namespace Imobiliaria
 
             /* cadCorretor
              * Cadastra um novo propietário 
-             * Entrada:
-             * Saída:
-             * Código+Nome+Endereço+Telefone+Salário
+             * Entrada: ref int codCorretor
+             * Saída: Código+Nome+Endereço+(DDD)-Telefone+Salário (informacoes/corretor.txt) 
              */
 
             FileStream arqCorretor = new FileStream("informacoes/corretor.txt", FileMode.Open);
@@ -375,9 +360,9 @@ namespace Imobiliaria
 
             /* cadImovel
              * Cadastra um novo imóvel 
-             * Entrada:
-             * Saída:
-             * Código+Código proprietário+Endereço+Categoria+Tipo+Quantidade de quartos+Quantidade de vagas+Valor+Condomínio+Status+Observações
+             * Entrada: ref int codImovel
+             * Saída: Código+Código proprietário+Endereço+Categoria+Tipo+Quantidade de quartos+Quantidade de vagas+Valor+Condomínio+Status+Observações (informacoes/imovelAux.txt e informacoes/imovel.txt)
+             
              */
 
             FileStream arqImovelAux = new FileStream("informacoes/imovelAux.txt", FileMode.Open);
@@ -496,8 +481,6 @@ namespace Imobiliaria
                 return;
             }
 
-            // Fazer um if código do prop. não estiver cadastrado, chame a função cadProp
-
             Console.WriteLine("Endereço:");
             end = Console.ReadLine();
             Console.WriteLine("Categoria (apartamento, casa, cobertura, lote, etc):");
@@ -526,122 +509,12 @@ namespace Imobiliaria
 
         }
 
-        public static int escreveImovelLoc1(int codImovel)
-
-        // Essa função escreve o que está no imovelAux.txt em imovel.txt, alterando o imovel para "alugado"
-
-        {
-            FileStream arqImovelAux = new FileStream("informacoes/imovelAux.txt", FileMode.Open);
-            StreamReader leImovelAux = new StreamReader(arqImovelAux);
-
-            FileStream arqImovel = new FileStream("informacoes/imovel.txt", FileMode.Create);
-            StreamWriter escImovel = new StreamWriter(arqImovel);
-
-            string leLinha, tipo, status;
-            string[] codLocAux, linhaImovel;
-            int codImovelAux = 0, codCliente, duracao, dia = 0, mes = 0, ano = 0, locSucesso = 0;
-            double aluguel = 0, taxa, valorProp;
-
-            do
-            {
-                leLinha = leImovelAux.ReadLine();
-
-                if (leLinha != null)
-                {
-                    linhaImovel = leLinha.Split('+');
-                    codImovelAux = int.Parse(linhaImovel[0]);
-                    tipo = linhaImovel[4];
-                    status = linhaImovel[9];
-
-                    if (codImovelAux == codImovel)
-                    {
-                        if (tipo == "locacao" && status == "a alugar")
-                        {
-                            escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+alugado+{linhaImovel[10]}");
-                            locSucesso = 1;
-                        }
-                        else
-                        {
-                            escImovel.WriteLine(leLinha);
-                            locSucesso = 0;
-                        }
-                    }
-                    else
-                    {
-                        escImovel.WriteLine(leLinha);
-                    }
-                }
-
-            } while (leLinha != null);
-
-            escImovel.Close();
-            leImovelAux.Close();
-            escreveImovelLoc2(codImovel);
-            return locSucesso;
-            // chama escreveImovelLoc2 para escrever em imovelAux.txt o que alteramos aqui
-        }
-
-        public static void escreveImovelLoc2(int codImovel)
-
-        // Essa função escreve o que está em imovel.txt em imovelAux.txt
-        // Para as duas ficarem iguais
-
-        {
-            FileStream arqImovelAux = new FileStream("informacoes/imovel.txt", FileMode.Open);
-            StreamReader leImovelAux = new StreamReader(arqImovelAux);
-
-            FileStream arqImovel = new FileStream("informacoes/imovelAux.txt", FileMode.Create);
-            StreamWriter escImovel = new StreamWriter(arqImovel);
-
-            string leLinha, tipo, status;
-            string[] codLocAux, linhaImovel;
-            int codImovelAux = 0, codCliente, duracao, dia = 0, mes = 0, ano = 0;
-            double aluguel = 0, taxa, valorProp;
-
-            do
-            {
-                leLinha = leImovelAux.ReadLine();
-
-                if (leLinha != null)
-                {
-                    linhaImovel = leLinha.Split('+');
-                    codImovelAux = int.Parse(linhaImovel[0]);
-                    tipo = linhaImovel[4];
-                    status = linhaImovel[9];
-
-                    if (codImovelAux == codImovel)
-                    {
-                        if (tipo == "locacao")
-                        {
-                            if (status == "a alugar")
-                            {
-                                escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+alugado+{linhaImovel[10]}");
-                            }
-                            else
-                            {
-                                escImovel.WriteLine(leLinha);
-                            }
-                        }
-                        else
-                        {
-                            escImovel.WriteLine(leLinha);
-                        }
-                    }
-                    else
-                    {
-                        escImovel.WriteLine(leLinha);
-                    }
-                }
-
-            } while (leLinha != null);
-
-            escImovel.Close();
-            leImovelAux.Close();
-
-        }
+        
 
         public static bool verificaProp(int codImovel)
         {
+
+            // Essa função verifica se o proprietário de um imóvel já está cadastrado
 
             FileStream arqImovelAux = new FileStream("informacoes/imovelAux.txt", FileMode.Open);
             StreamReader leImovelAux = new StreamReader(arqImovelAux);
@@ -651,7 +524,6 @@ namespace Imobiliaria
             string leLinha;
             string[] codImovelAux, codPropAux;
             int codImovelAux2, codPropAux2, codProp = 0;
-            bool codPropAux3 = false;
 
             do
             {
@@ -708,21 +580,8 @@ namespace Imobiliaria
              * Cadastra uma nova locação
              * Entrada:
              * Saída:
-             * Código locação+Código imóvel+Código cliente+Aluguel+Taxa administrativa+Valor do proprietário+Data de início da locação+Duração da locação
+             * Código locação+Código imóvel+Código cliente+Aluguel+Taxa administrativa+Valor do proprietário+Data de início da locação+Duração da locação (informacoes/locacoes.txt e informacoes/imovelAux.txt e informacoes/imovel.txt)
              */
-
-            // TO DO (a fazer)
-            // Um imóvel só pode ser alugado, caso o status dele seja “a alugar” e o seu tipo deve ser “aluguel”
-            // Para cadastrar uma locação ou venda, primeiro é necessário que o cliente, proprietário e imóvel estejam cadastrados
-            // Fazer modificar a linha do imóvel e não criar outra
-            // Refazer essa função, a de Locação e a de Imóvel
-
-            /*
-             * Considere as seguintes restrições: para cadastrar uma locação ou venda, primeiro é necessário
-               que o cliente, proprietário e imóvel estejam cadastrados. Além disso, um imóvel só pode ser
-               vendido, caso o status dele seja “a vender” e o seu tipo deve ser “venda”. Um imóvel também só
-               pode ser alugado, caso o status dele seja “a alugar” e o seu tipo deve ser “aluguel”. 
-             * */
 
             Console.Clear();
 
@@ -820,8 +679,6 @@ namespace Imobiliaria
 
             } while (leLinha != null);
 
-            // Verificar se o proprietário do imóvel é válido
-
             if (codImovelAux3 == 0)
             {
                 Console.WriteLine("\nCódigo de imóvel inválido" +
@@ -902,95 +759,94 @@ namespace Imobiliaria
 
         }
 
-        public static int escreveImovelVenda1(int codImovel)
+        public static int escreveImovelLoc1(int codImovel)
 
-        // Essa função escreve "com proposta" no arquivo imovel.txt
+        // Essa função escreve "alugado" no arquivo imovel.txt
 
         {
+            FileStream arqImovelAux = new FileStream("informacoes/imovelAux.txt", FileMode.Open);
+            StreamReader leImovelAux = new StreamReader(arqImovelAux);
+
+            FileStream arqImovel = new FileStream("informacoes/imovel.txt", FileMode.Create);
+            StreamWriter escImovel = new StreamWriter(arqImovel);
+
+            string leLinha, tipo, status;
+            string[] linhaImovel;
+            int codImovelAux = 0, locSucesso = 0;
+
+            do
             {
-                FileStream arqImovelAux = new FileStream("informacoes/imovelAux.txt", FileMode.Open);
-                StreamReader leImovelAux = new StreamReader(arqImovelAux);
+                leLinha = leImovelAux.ReadLine();
 
-                FileStream arqImovel = new FileStream("informacoes/imovel.txt", FileMode.Create);
-                StreamWriter escImovel = new StreamWriter(arqImovel);
-
-                string leLinha, tipo, status;
-                string[] codLocAux, linhaImovel;
-                int codImovelAux = 0, codCliente, duracao, dia = 0, mes = 0, ano = 0, vendSucesso = 0;
-                double aluguel = 0, taxa, valorProp;
-
-                do
+                if (leLinha != null)
                 {
-                    leLinha = leImovelAux.ReadLine();
+                    linhaImovel = leLinha.Split('+');
+                    codImovelAux = int.Parse(linhaImovel[0]);
+                    tipo = linhaImovel[4];
+                    status = linhaImovel[9];
 
-                    if (leLinha != null)
+                    if (codImovelAux == codImovel)
                     {
-                        linhaImovel = leLinha.Split('+');
-                        codImovelAux = int.Parse(linhaImovel[0]);
-                        tipo = linhaImovel[4];
-                        status = linhaImovel[9];
-
-                        if (codImovelAux == codImovel)
+                        if (tipo == "locacao" && status == "a alugar")
                         {
-                            if (tipo == "venda" && status == "a vender")
-                            {
-                                escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+com proposta+{linhaImovel[10]}");
-                                vendSucesso = 1;
-                            }
-                            else
-                            {
-                                escImovel.WriteLine(leLinha);
-                                vendSucesso = 0;
-                            }
+                            escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+alugado+{linhaImovel[10]}");
+                            locSucesso = 1;
                         }
                         else
                         {
                             escImovel.WriteLine(leLinha);
+                            locSucesso = 0;
                         }
                     }
+                    else
+                    {
+                        escImovel.WriteLine(leLinha);
+                    }
+                }
 
-                } while (leLinha != null);
+            } while (leLinha != null);
 
-                escImovel.Close();
-                leImovelAux.Close();
-                escreveImovelVenda2(codImovel);
-                return vendSucesso;
-            }
+            escImovel.Close();
+            leImovelAux.Close();
+            escreveImovelLoc2(codImovel);
+            return locSucesso;
+            // chama escreveImovelLoc2 para escrever em imovelAux.txt o que alteramos aqui
         }
 
-        public static void escreveImovelVenda2(int codImovel)
+        public static void escreveImovelLoc2(int codImovel)
 
-        // Essa função escreve "com proposta" no arquivo imovelAux.txt
+        // Essa função escreve "alugado" no arquivo imovelAux.txt
+        // Para os dois ficarem iguais (imovelAux.txt e imovel.txt)
 
         {
+            FileStream arqImovelAux = new FileStream("informacoes/imovel.txt", FileMode.Open);
+            StreamReader leImovelAux = new StreamReader(arqImovelAux);
+
+            FileStream arqImovel = new FileStream("informacoes/imovelAux.txt", FileMode.Create);
+            StreamWriter escImovel = new StreamWriter(arqImovel);
+
+            string leLinha, tipo, status;
+            string[] linhaImovel;
+            int codImovelAux = 0;
+
+            do
             {
-                FileStream arqImovelAux = new FileStream("informacoes/imovel.txt", FileMode.Open);
-                StreamReader leImovelAux = new StreamReader(arqImovelAux);
+                leLinha = leImovelAux.ReadLine();
 
-                FileStream arqImovel = new FileStream("informacoes/imovelAux.txt", FileMode.Create);
-                StreamWriter escImovel = new StreamWriter(arqImovel);
-
-                string leLinha, tipo, status;
-                string[] codLocAux, linhaImovel;
-                int codImovelAux = 0, codCliente, duracao, dia = 0, mes = 0, ano = 0;
-                double aluguel = 0, taxa, valorProp;
-
-                do
+                if (leLinha != null)
                 {
-                    leLinha = leImovelAux.ReadLine();
+                    linhaImovel = leLinha.Split('+');
+                    codImovelAux = int.Parse(linhaImovel[0]);
+                    tipo = linhaImovel[4];
+                    status = linhaImovel[9];
 
-                    if (leLinha != null)
+                    if (codImovelAux == codImovel)
                     {
-                        linhaImovel = leLinha.Split('+');
-                        codImovelAux = int.Parse(linhaImovel[0]);
-                        tipo = linhaImovel[4];
-                        status = linhaImovel[9];
-
-                        if (codImovelAux == codImovel)
+                        if (tipo == "locacao")
                         {
-                            if (tipo == "venda" && status == "a vender")
+                            if (status == "a alugar")
                             {
-                                escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+com proposta+{linhaImovel[10]}");
+                                escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+alugado+{linhaImovel[10]}");
                             }
                             else
                             {
@@ -1002,118 +858,16 @@ namespace Imobiliaria
                             escImovel.WriteLine(leLinha);
                         }
                     }
-
-                } while (leLinha != null);
-
-                escImovel.Close();
-                leImovelAux.Close();
-                // escreveImovelVenda3(codImovel);
-            }
-        }
-        public static void escreveImovelVenda3(int codImovel)
-
-        // Essa função escreve "vendido" no arquivo imovel.txt
-
-        {
-            {
-                FileStream arqImovelAux = new FileStream("informacoes/imovelAux.txt", FileMode.Open);
-                StreamReader leImovelAux = new StreamReader(arqImovelAux);
-
-                FileStream arqImovel = new FileStream("informacoes/imovel.txt", FileMode.Create);
-                StreamWriter escImovel = new StreamWriter(arqImovel);
-
-                string leLinha, tipo, status;
-                string[] codLocAux, linhaImovel;
-                int codImovelAux = 0, codCliente, duracao, dia = 0, mes = 0, ano = 0;
-                double aluguel = 0, taxa, valorProp;
-
-                do
-                {
-                    leLinha = leImovelAux.ReadLine();
-
-                    if (leLinha != null)
+                    else
                     {
-                        linhaImovel = leLinha.Split('+');
-                        codImovelAux = int.Parse(linhaImovel[0]);
-                        tipo = linhaImovel[4];
-                        status = linhaImovel[9];
-
-                        if (codImovelAux == codImovel)
-                        {
-                            if (tipo == "venda" && status == "com proposta")
-                            {
-                                escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+vendido+{linhaImovel[10]}");
-                            }
-                            else
-                            {
-                                escImovel.WriteLine(leLinha);
-                            }
-                        }
-                        else
-                        {
-                            escImovel.WriteLine(leLinha);
-                        }
+                        escImovel.WriteLine(leLinha);
                     }
+                }
 
-                } while (leLinha != null);
+            } while (leLinha != null);
 
-                escImovel.Close();
-                leImovelAux.Close();
-                escreveImovelVenda4(codImovel);
-            }
-        }
-        public static void escreveImovelVenda4(int codImovel)
-
-        // Essa função escreve "com proposta" no arquivo imovelAux.txt
-
-        {
-
-            {
-                FileStream arqImovelAux = new FileStream("informacoes/imovel.txt", FileMode.Open);
-                StreamReader leImovelAux = new StreamReader(arqImovelAux);
-
-                FileStream arqImovel = new FileStream("informacoes/imovelAux.txt", FileMode.Create);
-                StreamWriter escImovel = new StreamWriter(arqImovel);
-
-                string leLinha, tipo, status;
-                string[] codLocAux, linhaImovel;
-                int codImovelAux = 0, codCliente, duracao, dia = 0, mes = 0, ano = 0;
-                double aluguel = 0, taxa, valorProp;
-
-                do
-                {
-                    leLinha = leImovelAux.ReadLine();
-
-                    if (leLinha != null)
-                    {
-                        linhaImovel = leLinha.Split('+');
-                        codImovelAux = int.Parse(linhaImovel[0]);
-                        tipo = linhaImovel[4];
-                        status = linhaImovel[9];
-
-                        if (codImovelAux == codImovel)
-                        {
-                            if (tipo == "venda" && status == "com proposta")
-                            {
-                                escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+vendido+{linhaImovel[10]}");
-                            }
-                            else
-                            {
-                                escImovel.WriteLine(leLinha);
-                            }
-                        }
-                        else
-                        {
-                            escImovel.WriteLine(leLinha);
-                        }
-                    }
-
-                } while (leLinha != null);
-
-                escImovel.Close();
-                leImovelAux.Close();
-
-            }
+            escImovel.Close();
+            leImovelAux.Close();
 
         }
 
@@ -1126,32 +880,14 @@ namespace Imobiliaria
              * Saída:
              */
 
-            // TO DO (a fazer)
-            // Um imóvel só pode ser vendido, caso o status dele seja “a vender” e o seu tipo deve ser “venda”
-            // Fazer um menu para cadastrar propostas e outro de vendas efetivadas
-            // Para cadastrar uma locação ou venda, primeiro é necessário que o cliente, proprietário e imóvel estejam cadastrados
-            // Fazer modificar a linha do imóvel e não criar outra
-            // Não está escrevendo a linha com vendido, depois do com proposta
-            // Quando eu coloco FileMode.Create eu faço um arquivo novo, então eu tenho que fazer isso só no final
-            // e depois eu pego um arquivo temp leio e coloco no arquivo Create
-            // Refazer essa função, a de Locação e a de Imóvel
-            // Perguntar se o usuário já tá cadastrado antes, se não, cadastrar e mostrar o código dele pra quem estiver cadastrando a venda saber
-
-            /*
-             * Considere as seguintes restrições: para cadastrar uma locação ou venda, primeiro é necessário
-               que o cliente, proprietário e imóvel estejam cadastrados. Além disso, um imóvel só pode ser
-               vendido, caso o status dele seja “a vender” e o seu tipo deve ser “venda”. Um imóvel também só
-               pode ser alugado, caso o status dele seja “a alugar” e o seu tipo deve ser “aluguel”. 
-             * */
-
             Console.Clear();
 
             Console.WriteLine("Imobiliária Seu Lobato\n\n\n" +
                 "Cadastrar venda\n\n");
 
-            string leLinha, leLinhaVenda, leLinhaImovel;
-            string[] codVendaAux, linhaImovel, codClienteAux, codImovelAux1, codCorretorAux;
-            int codImovel, codImovelAux = 0, codImovelAux2, codImovelAux3 = 0, codCliente, codClienteAux2, codClienteAux3 = 0, codCorretor, codCorretorAux2, codCorretorAux3 = 0, dia = 0, mes = 0, ano = 0, vendSucesso;
+            string leLinha, leLinhaVenda;
+            string[] codVendaAux, codClienteAux, codImovelAux1, codCorretorAux;
+            int codImovel, codImovelAux2, codImovelAux3 = 0, codCliente, codClienteAux2, codClienteAux3 = 0, codCorretor, codCorretorAux2, codCorretorAux3 = 0, dia = 0, mes = 0, ano = 0, vendSucesso;
             double venda = 0, taxa = 0, valorProp = 0;
 
             FileStream arqVenda = new FileStream("informacoes/vendas.txt", FileMode.Open);
@@ -1361,58 +1097,218 @@ namespace Imobiliaria
             }
         }
 
-        /*public static void escVenda()
+        public static int escreveImovelVenda1(int codImovel)
+
+        // Essa função escreve "com proposta" no arquivo imovel.txt
+
         {
-
-            do
             {
-                leLinhaImovel = leImovelAux.ReadLine();
+                FileStream arqImovelAux = new FileStream("informacoes/imovelAux.txt", FileMode.Open);
+                StreamReader leImovelAux = new StreamReader(arqImovelAux);
 
-                if (leLinhaImovel != null)
+                FileStream arqImovel = new FileStream("informacoes/imovel.txt", FileMode.Create);
+                StreamWriter escImovel = new StreamWriter(arqImovel);
+
+                string leLinha, tipo, status;
+                string[] linhaImovel;
+                int codImovelAux = 0, vendSucesso = 0;
+
+                do
                 {
-                    linhaImovel = leLinhaImovel.Split('+');
-                    codImovelAux = int.Parse(linhaImovel[0]);
+                    leLinha = leImovelAux.ReadLine();
 
-                    if (codImovelAux == codImovel)
+                    if (leLinha != null)
                     {
-                        venda = double.Parse(linhaImovel[7]);
-                        taxa = 0.15 * venda;
-                        valorProp = 0.85 * venda;
-                        leImovelAux.Close();
+                        linhaImovel = leLinha.Split('+');
+                        codImovelAux = int.Parse(linhaImovel[0]);
+                        tipo = linhaImovel[4];
+                        status = linhaImovel[9];
 
-                        vendSucesso = escreveImovelVenda1(codImovel);
-
-                        if (vendSucesso == 0)
+                        if (codImovelAux == codImovel)
                         {
-                            Console.WriteLine("\nCadastro não realizado com sucesso" +
-                                "\nImóvel não é do tipo venda ou já está vendido");
-                            escImovelAux.Close();
-                            leImovelAux.Close();
-                            escVenda.Close();
-                            leVenda.Close();
-                            leCliente.Close();
-                            leCorretor.Close();
-                            return;
+                            if (tipo == "venda" && status == "a vender")
+                            {
+                                escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+com proposta+{linhaImovel[10]}");
+                                vendSucesso = 1;
+                            }
+                            else
+                            {
+                                escImovel.WriteLine(leLinha);
+                                vendSucesso = 0;
+                            }
                         }
-
-                        if (vendSucesso == 1)
+                        else
                         {
-                            Console.WriteLine("Data da venda:");
-                            Console.WriteLine("Dia:");
-                            dia = int.Parse(Console.ReadLine());
-                            Console.WriteLine("Mês:");
-                            mes = int.Parse(Console.ReadLine());
-                            Console.WriteLine("Ano:");
-                            ano = int.Parse(Console.ReadLine());
-
-                            escreveImovelVenda3(codImovel);
-
-                            leLinhaImovel = null;
+                            escImovel.WriteLine(leLinha);
                         }
                     }
-                }
+
+                } while (leLinha != null);
+
+                escImovel.Close();
+                leImovelAux.Close();
+                escreveImovelVenda2(codImovel);
+                return vendSucesso;
             }
-        }*/
+        }
+
+        public static void escreveImovelVenda2(int codImovel)
+
+        // Essa função escreve "com proposta" no arquivo imovelAux.txt
+        // Para os dois ficarem iguais (imovelAux.txt e imovel.txt)
+
+        {
+            {
+                FileStream arqImovelAux = new FileStream("informacoes/imovel.txt", FileMode.Open);
+                StreamReader leImovelAux = new StreamReader(arqImovelAux);
+
+                FileStream arqImovel = new FileStream("informacoes/imovelAux.txt", FileMode.Create);
+                StreamWriter escImovel = new StreamWriter(arqImovel);
+
+                string leLinha, tipo, status;
+                string[] linhaImovel;
+                int codImovelAux = 0;
+
+                do
+                {
+                    leLinha = leImovelAux.ReadLine();
+
+                    if (leLinha != null)
+                    {
+                        linhaImovel = leLinha.Split('+');
+                        codImovelAux = int.Parse(linhaImovel[0]);
+                        tipo = linhaImovel[4];
+                        status = linhaImovel[9];
+
+                        if (codImovelAux == codImovel)
+                        {
+                            if (tipo == "venda" && status == "a vender")
+                            {
+                                escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+com proposta+{linhaImovel[10]}");
+                            }
+                            else
+                            {
+                                escImovel.WriteLine(leLinha);
+                            }
+                        }
+                        else
+                        {
+                            escImovel.WriteLine(leLinha);
+                        }
+                    }
+
+                } while (leLinha != null);
+
+                escImovel.Close();
+                leImovelAux.Close();
+                // escreveImovelVenda3(codImovel);
+            }
+        }
+        public static void escreveImovelVenda3(int codImovel)
+
+        // Essa função escreve "vendido" no arquivo imovel.txt
+
+        {
+            {
+                FileStream arqImovelAux = new FileStream("informacoes/imovelAux.txt", FileMode.Open);
+                StreamReader leImovelAux = new StreamReader(arqImovelAux);
+
+                FileStream arqImovel = new FileStream("informacoes/imovel.txt", FileMode.Create);
+                StreamWriter escImovel = new StreamWriter(arqImovel);
+
+                string leLinha, tipo, status;
+                string[] linhaImovel;
+                int codImovelAux = 0;
+
+                do
+                {
+                    leLinha = leImovelAux.ReadLine();
+
+                    if (leLinha != null)
+                    {
+                        linhaImovel = leLinha.Split('+');
+                        codImovelAux = int.Parse(linhaImovel[0]);
+                        tipo = linhaImovel[4];
+                        status = linhaImovel[9];
+
+                        if (codImovelAux == codImovel)
+                        {
+                            if (tipo == "venda" && status == "com proposta")
+                            {
+                                escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+vendido+{linhaImovel[10]}");
+                            }
+                            else
+                            {
+                                escImovel.WriteLine(leLinha);
+                            }
+                        }
+                        else
+                        {
+                            escImovel.WriteLine(leLinha);
+                        }
+                    }
+
+                } while (leLinha != null);
+
+                escImovel.Close();
+                leImovelAux.Close();
+                escreveImovelVenda4(codImovel);
+            }
+        }
+        public static void escreveImovelVenda4(int codImovel)
+
+        // Essa função escreve "vendido" no arquivo imovelAux.txt
+        // Para os dois ficarem iguais (imovelAux.txt e imovel.txt)
+
+        {
+
+            {
+                FileStream arqImovelAux = new FileStream("informacoes/imovel.txt", FileMode.Open);
+                StreamReader leImovelAux = new StreamReader(arqImovelAux);
+
+                FileStream arqImovel = new FileStream("informacoes/imovelAux.txt", FileMode.Create);
+                StreamWriter escImovel = new StreamWriter(arqImovel);
+
+                string leLinha, tipo, status;
+                string[] linhaImovel;
+                int codImovelAux = 0;
+
+                do
+                {
+                    leLinha = leImovelAux.ReadLine();
+
+                    if (leLinha != null)
+                    {
+                        linhaImovel = leLinha.Split('+');
+                        codImovelAux = int.Parse(linhaImovel[0]);
+                        tipo = linhaImovel[4];
+                        status = linhaImovel[9];
+
+                        if (codImovelAux == codImovel)
+                        {
+                            if (tipo == "venda" && status == "com proposta")
+                            {
+                                escImovel.WriteLine($"{linhaImovel[0]}+{linhaImovel[1]}+{linhaImovel[2]}+{linhaImovel[3]}+{linhaImovel[4]}+{linhaImovel[5]}+{linhaImovel[6]}+{linhaImovel[7]}+{linhaImovel[8]}+vendido+{linhaImovel[10]}");
+                            }
+                            else
+                            {
+                                escImovel.WriteLine(leLinha);
+                            }
+                        }
+                        else
+                        {
+                            escImovel.WriteLine(leLinha);
+                        }
+                    }
+
+                } while (leLinha != null);
+
+                escImovel.Close();
+                leImovelAux.Close();
+
+            }
+
+        }
 
         // Funções de Pesquisa
 
@@ -1421,9 +1317,7 @@ namespace Imobiliaria
 
             /* 
              * pesquisa
-             * Abre o menu de pesquisas
-             * Entrada:
-             * Saída:
+             * Abre o menu de pesquisas (clientes/proprietários/corretores/sair)
              */
 
             char opc;
@@ -1478,8 +1372,6 @@ namespace Imobiliaria
 
             } while (opc != 'd');
 
-            //Console.ReadKey();
-
         }
 
         public static void pesProp(string nome)
@@ -1488,7 +1380,7 @@ namespace Imobiliaria
             /* 
              * pesProp
              * Pesquisa propietário 
-             * Entrada:
+             * Entrada: string nome
              * Saída:
              */
 
@@ -1540,7 +1432,7 @@ namespace Imobiliaria
             /* 
              * pesCliente
              * Pesquisa cliente 
-             * Entrada:
+             * Entrada: string nome
              * Saída:
              */
 
@@ -1595,7 +1487,7 @@ namespace Imobiliaria
             /* 
              * pesCorretor
              * Pesquisa corretor 
-             * Entrada:
+             * Entrada: string nome
              * Saída:
              */
 
@@ -1649,13 +1541,11 @@ namespace Imobiliaria
         {
             /* 
              * relatorio
-             * Abre o menu de relatórios
-             * Entrada:
-             * Saída:
+             * Abre o menu de relatórios (vendas corretor/vendas data/locações data/sair)
              */
 
             char opc;
-            int data, codCorretor, dia, mes, ano;
+            int codCorretor, dia, mes, ano;
 
             do
             {
@@ -1716,8 +1606,6 @@ namespace Imobiliaria
 
             } while (opc != 'd');
 
-            //Console.ReadKey();
-
         }
 
         public static void relCorretor(int codCorretor)
@@ -1725,7 +1613,7 @@ namespace Imobiliaria
 
             /* relCorretor
              * Mostra todas as vendas de imóveis de um corretor
-             * Entrada:
+             * Entrada: int codCorretor
              * Saída:
              */
 
@@ -1779,7 +1667,7 @@ namespace Imobiliaria
 
             /* relVenda
              * Mostra todas as vendas de imóveis de uma determinada data
-             * Entrada:
+             * Entrada: int dia, int mes, int ano
              * Saída:
              */
 
@@ -1813,7 +1701,7 @@ namespace Imobiliaria
                     {
 
                         Console.WriteLine($"\nNúmero da venda:{linhaImovel[0]}\nCódigo do Imóvel: {linhaImovel[1]}\nCódigo do cliente: {linhaImovel[2]}\nCódigo do corretor: {linhaImovel[3]}" +
-                            $"\nValor da venda: R$ {linhaImovel[4]}\nTaxa administrativa: R$ {linhaImovel[5]}\nValor do proprietário: R$ {linhaImovel[6]}\nData da venda: {linhaImovel[7]}\n");
+                            $"\nValor da venda: R$ {linhaImovel[4]}\nTaxa administrativa: R$ {linhaImovel[5]}\nValor do proprietário: R$ {linhaImovel[6]}\nData da venda: {linhaImovel[7]}");
                         quant++;
                     }
                 }
@@ -1836,7 +1724,7 @@ namespace Imobiliaria
 
             /* cadVenda
              * Mostra todas as locações de imóveis de uma determinada data
-             * Entrada:
+             * Entrada: int dia, int mes, int ano
              * Saída:
              */
 
@@ -1844,7 +1732,7 @@ namespace Imobiliaria
             StreamReader leLoc = new StreamReader(arqLoc);
             string leLinha;
             string[] linhaImovel, linhaImovel2;
-            int dataAux, quant = 0;
+            int quant = 0;
             int[] data = new int[3];
 
             Console.Clear();
@@ -1869,7 +1757,7 @@ namespace Imobiliaria
                     {
 
                         Console.WriteLine($"\nNúmero da locação:{linhaImovel[0]}\nCódigo do imóvel: {linhaImovel[1]}\nCódigo do inquilino: {linhaImovel[2]}\nValor do aluguel: R$ {linhaImovel[3]}" +
-                            $"\nTaxa administrativa: R$ {linhaImovel[4]}\nValor do proprietário: R$ {linhaImovel[5]}\nData de início da locação: {linhaImovel[6]}\nDuração da locação: {linhaImovel[7]} meses\n");
+                            $"\nTaxa administrativa: R$ {linhaImovel[4]}\nValor do proprietário: R$ {linhaImovel[5]}\nData de início da locação: {linhaImovel[6]}\nDuração da locação: {linhaImovel[7]} meses");
                         quant++;
                     }
                 }
