@@ -15,10 +15,6 @@ namespace Imobiliaria
         static void Main(string[] args)
         {
 
-            // TO DO (a fazer)
-            // Comentar o código do programa
-            // Escrever o cabeçalho das funções
-
             menu();
 
         }
@@ -77,7 +73,6 @@ namespace Imobiliaria
             } while (opc != 'd');
 
         }
-
 
         // Funções de Cadastro
 
@@ -177,8 +172,6 @@ namespace Imobiliaria
             Console.WriteLine("Imobiliária Seu Lobato\n\n\n" +
                 "Cadastrar proprietário\n\n");
 
-            // Implementar limitações para o tamanho do DDD, do telefone
-
             do
             {
 
@@ -239,8 +232,6 @@ namespace Imobiliaria
 
             Console.WriteLine("Imobiliária Seu Lobato\n\n\n" +
                 "Cadastrar cliente\n\n");
-
-            // Implementar limitações para o tamanho do DDD, do telefone, do dia(1-31) e mes(1-12)
 
             do
             {
@@ -311,8 +302,6 @@ namespace Imobiliaria
             Console.WriteLine("Imobiliária Seu Lobato\n\n\n" +
                 "Cadastrar corretor\n\n");
 
-            // Implementar limitações para o tamanho do DDD, do telefone
-
             do
             {
 
@@ -361,8 +350,7 @@ namespace Imobiliaria
             /* cadImovel
              * Cadastra um novo imóvel 
              * Entrada: ref int codImovel
-             * Saída: Código+Código proprietário+Endereço+Categoria+Tipo+Quantidade de quartos+Quantidade de vagas+Valor+Condomínio+Status+Observações (informacoes/imovelAux.txt e informacoes/imovel.txt)
-             
+             * Saída: Código+Código proprietário+Endereço+Categoria+Tipo+Quantidade de quartos+Quantidade de vagas+Valor+Condomínio+Status+Observações (informacoes/imovelAux.txt e informacoes/imovel.txt) 
              */
 
             FileStream arqImovelAux = new FileStream("informacoes/imovelAux.txt", FileMode.Open);
@@ -509,8 +497,6 @@ namespace Imobiliaria
 
         }
 
-        
-
         public static bool verificaProp(int codImovel)
         {
 
@@ -624,7 +610,6 @@ namespace Imobiliaria
 
             Console.WriteLine("Código do cliente:");
             codCliente = int.Parse(Console.ReadLine());
-            // Alterar pra pegar o nome do cliente e transformar pro código dele
             do
             {
 
@@ -673,6 +658,7 @@ namespace Imobiliaria
                     if (codImovelAux2 == codImovel)
                     {
                         codImovelAux3 = 1;
+                        aluguel = int.Parse(codImovelAux[7]);
                     }
 
                 }
@@ -712,8 +698,9 @@ namespace Imobiliaria
 
             if (locSucesso == 0)
             {
-                Console.WriteLine("\nCadastro não realizado com sucesso" +
-                    "\nImóvel não é do tipo locação ou já está alugado");
+
+                Console.WriteLine("\nImóvel não é do tipo locação ou já está alugado" +
+                    "\nCadastro não realizado com sucesso");
                 Console.ReadKey();
                 return;
             }
@@ -918,13 +905,11 @@ namespace Imobiliaria
 
             if (leLinhaVenda != null)
             {
-                // Quando chegar na última linha escreve a última linha lida
                 escVenda.WriteLine(leLinhaVenda);
             }
 
             Console.WriteLine("Código do cliente:");
             codCliente = int.Parse(Console.ReadLine());
-            // Alterar pra pegar o nome do cliente e transformar pro código dele
             do
             {
 
@@ -982,9 +967,6 @@ namespace Imobiliaria
                 }
 
             } while (leLinha != null);
-
-            // Verificar se o proprietário do imóvel é válido
-
             if (codImovelAux3 == 0)
             {
                 Console.WriteLine("\nCódigo de imóvel inválido" +
@@ -999,7 +981,25 @@ namespace Imobiliaria
                 return;
             }
 
-            // Alterar pra pegar o nome do cliente e transformar pro código dele
+            escImovelAux.Close();
+            leImovelAux.Close();
+
+            vendSucesso = escreveImovelVenda1(codImovel);
+
+            if (vendSucesso == 0)
+            {
+                Console.WriteLine("\nImóvel não é do tipo venda ou já está vendido" +
+                    "\nCadastro não realizado com sucesso");
+                Console.ReadKey();
+                escImovelAux.Close();
+                leImovelAux.Close();
+                escVenda.Close();
+                leVenda.Close();
+                leCliente.Close();
+                leCorretor.Close();
+                return;
+            }
+
             Console.WriteLine("Código do corretor:");
             codCorretor = int.Parse(Console.ReadLine());
             do
@@ -1049,25 +1049,6 @@ namespace Imobiliaria
                 leVenda.Close();
                 leCorretor.Close();
                 leCliente.Close();
-                return;
-            }
-
-            escImovelAux.Close();
-            leImovelAux.Close();
-
-            vendSucesso = escreveImovelVenda1(codImovel);
-
-            if (vendSucesso == 0)
-            {
-                Console.WriteLine("\nCadastro não realizado com sucesso" +
-                    "\nImóvel não é do tipo venda ou já está vendido");
-                Console.ReadKey();
-                escImovelAux.Close();
-                leImovelAux.Close();
-                escVenda.Close();
-                leVenda.Close();
-                leCliente.Close();
-                leCorretor.Close();
                 return;
             }
 
@@ -1340,21 +1321,21 @@ namespace Imobiliaria
                 {
                     case 'a':
 
-                        Console.WriteLine("Nome:");
+                        Console.WriteLine("\nNome:");
                         nome = Console.ReadLine().ToUpper();
                         pesCliente(nome);
                         break;
 
                     case 'b':
 
-                        Console.WriteLine("Nome:");
+                        Console.WriteLine("\nNome:");
                         nome = Console.ReadLine().ToUpper();
                         pesProp(nome);
                         break;
 
                     case 'c':
 
-                        Console.WriteLine("Nome:");
+                        Console.WriteLine("\nNome:");
                         nome = Console.ReadLine().ToUpper();
                         pesCorretor(nome);
                         break;
@@ -1405,7 +1386,7 @@ namespace Imobiliaria
 
                     if (inf[1].ToUpper() == nome)
                     {
-                        Console.WriteLine($"Código: {inf[0]}" +
+                        Console.WriteLine($"\nCódigo: {inf[0]}" +
                             $"\nNome: {inf[1]}" +
                             $"\nEndereço: {inf[2]}" +
                             $"\nTelefone: {inf[3]}");
@@ -1535,7 +1516,7 @@ namespace Imobiliaria
 
         }
 
-        // Relatório
+        // Funções de Relatório
 
         public static void relatorio()
         {
@@ -1564,14 +1545,14 @@ namespace Imobiliaria
                 {
                     case 'a':
 
-                        Console.WriteLine("Código do corretor:");
+                        Console.WriteLine("\nCódigo do corretor:");
                         codCorretor = int.Parse(Console.ReadLine());
                         relCorretor(codCorretor);
                         break;
 
                     case 'b':
 
-                        Console.WriteLine("Data:");
+                        Console.WriteLine("\nData:");
                         Console.WriteLine("Dia:");
                         dia = int.Parse(Console.ReadLine());
                         Console.WriteLine("Mes:");
@@ -1583,7 +1564,7 @@ namespace Imobiliaria
 
                     case 'c':
 
-                        Console.WriteLine("Data:");
+                        Console.WriteLine("\nData:");
                         Console.WriteLine("Dia:");
                         dia = int.Parse(Console.ReadLine());
                         Console.WriteLine("Mes:");
